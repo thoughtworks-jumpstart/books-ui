@@ -10,9 +10,9 @@ class App extends Component {
   }
 
   async getBooks() {
-    const response = await fetch(
-      process.env.REACT_APP_BOOKS_API || "http://localhost:3000/books"
-    );
+    const url =
+      process.env.REACT_APP_BOOKS_API || "http://localhost:3000/books";
+    const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
       this.setState({
