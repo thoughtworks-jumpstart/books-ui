@@ -3,75 +3,69 @@ import "./App.css";
 
 const API_HOST = process.env.REACT_APP_BOOKS_API || "http://localhost:3000";
 
-class Books extends Component {
+class DataFetcher extends Component {
   state = {
-    books: []
+    data: [],
+    isLoading: true
   };
 
-  componentDidMount() {
-    this.getBooks();
-  }
-
-  async getBooks() {
-    const url = `${API_HOST}/books`;
-    const response = await fetch(url);
-    if (response.ok) {
-      const data = await response.json();
+  async componentDidMount() {
+    const url = `${API_HOST}${this.props.endpoint}`;
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        this.setState({
+          data
+        });
+      }
+    } catch (err) {
+      console.err(err);
+    } finally {
       this.setState({
-        books: data
+        isLoading: false
       });
     }
   }
 
   render() {
-    return (
-      <div>
-        <h1>Books</h1>
-        {this.state.books.map(book => {
-          return <li key={book._id}>{book.title}</li>;
-        })}
-      </div>
-    );
-  }
-}
-
-class Authors extends Component {
-  state = {
-    authors: []
-  };
-
-  async getAuthors() {
-    const url = `${API_HOST}/authors`;
-    const response = await fetch(url);
-    if (response.ok) {
-      const data = await response.json();
-      this.setState({
-        authors: data
-      });
+    if (this.state.isLoading) {
+      return <div>Loading…</div>;
     }
-  }
-
-  componentDidMount() {
-    this.getAuthors();
-  }
-
-  render() {
-    return (
-      <div>
-        <h1>Authors</h1>
-        {this.state.authors.map(author => {
-          return <li key={author._id}>{author.name}</li>;
-        })}
-      </div>
-    );
+    return this.props.render(this.state);
   }
 }
+
+const Books = ({ data = [] }) => {
+  return (
+    <div>
+      <h1>Books</h1>
+      {data.map(book => {
+        return <li key={book._id}>{book.title}</li>;
+      })}
+    </div>
+  );
+};
+
+const Authors = ({ data = [] }) => {
+  return (
+    <div>
+      <h1>Authors</h1>
+      {data.map(author => {
+        return <li key={author._id}>{author.name}</li>;
+      })}
+    </div>
+  );
+};
 class App extends Component {
   render() {
     return (
       <div>
-        <Books />
-        <Authors />
+        <DataFetcher endpoint="/books" render={props => <Books {...props} />} />
+        <DataFetcher
+          endpoint="/authors"
+          render={props => <Authors {...props} />}
+        />
       </div>
     );
   }
