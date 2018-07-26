@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`when data is not loaded shows a loading message 1`] = `
+<div>
+  Loading…
+</div>
+`;

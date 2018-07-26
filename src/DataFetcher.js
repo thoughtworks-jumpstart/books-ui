@@ -1,6 +1,7 @@
 import React from "react";
 
-const API_HOST = process.env.REACT_APP_BOOKS_API || "http://localhost:3000";
+export const API_HOST =
+  process.env.REACT_APP_BOOKS_API || "http://localhost:3000";
 
 class DataFetcher extends React.Component {
   state = {
@@ -19,7 +20,7 @@ class DataFetcher extends React.Component {
         });
       }
     } catch (err) {
-      console.err(err);
+      console.error(err);
     } finally {
       this.setState({
         isLoading: false

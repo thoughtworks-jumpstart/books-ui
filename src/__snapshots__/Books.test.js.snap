@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a list of books 1`] = `
+<div>
+  <h1>
+    Books
+  </h1>
+  <ul>
+    <li>
+      Harry Potter
+    </li>
+    <li>
+      Game of Thrones
+    </li>
+  </ul>
+</div>
+`;
